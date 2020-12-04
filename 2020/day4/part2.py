@@ -9,12 +9,17 @@ p = re.compile( '(?=.*byr:(?P<byr>(19[2-9]\d|200[0-2]))(\s|\Z))'
                 '(?=.*eyr:(?P<eyr>(202\d|2030))(\s|\Z))'
                 '(?=.*hcl:#(?P<hcl>[0-9a-f]{6})(\s|\Z))'
                 '(?=.*iyr:(?P<iyr>(201\d|2020))(\s|\Z))')
-passports = ['']
-lines = [line.strip() for line in open('input.txt')]
-for line in lines:
-    if line == '':
-        passports.append('')
-    else:
-        passports[len(passports) - 1] = passports[len(passports) - 1] + ' ' + line
 
+lines = [line.strip() for line in open('input.txt')]
+
+def splitter(lines):
+    string = ''
+    for line in lines:
+        if line == '':
+            yield string
+            string = ''
+        else:
+            string = string + ' ' + line
+
+passports = [pairs for pairs in splitter(lines)]
 print(sum([1 if p.match(passport) else 0 for passport in passports]))
