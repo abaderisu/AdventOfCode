@@ -10,7 +10,7 @@ def draw_crt(crt, x, y, sprite):
     if y == 6:
       y = 0
  
-  return crt, x, y
+  return x, y
 
 def execute(ops):
   vals = [1]
@@ -20,12 +20,12 @@ def execute(ops):
   crt = [['.' for _ in range(40)] for _ in range(6)]
 
   for op in ops:
-    crt,x,y = draw_crt(crt,x,y,vals[cycle])
+    x,y = draw_crt(crt,x,y,vals[cycle])
     vals.append(vals[cycle])
       
     cycle = cycle + 1
     if op[0] == 'addx':
-      crt,x,y = draw_crt(crt,x,y,vals[cycle])
+      x,y = draw_crt(crt,x,y,vals[cycle])
       vals.append(vals[cycle] + int(op[1]))
       cycle = cycle + 1
 
