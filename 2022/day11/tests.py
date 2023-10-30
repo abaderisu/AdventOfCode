@@ -1,14 +1,38 @@
 #!/usr/bin/env python3
 
-from day11 import monkey,playRounds
+from day11 import monkey,playRounds,parseMonkeys
 import copy
 
-monkeys = []
-monkeys.append(monkey([79,98],lambda x:x * 19,lambda x:x % 23 == 0,2,3))
-monkeys.append(monkey([54,65,75,74],lambda x:x + 6,lambda x:x % 19 == 0,2, 0))
-monkeys.append(monkey([79,60,97],lambda x:x*x,lambda x:x % 13 == 0,1,3))
-monkeys.append(monkey([74],lambda x:x+3,lambda x:x % 17 == 0,0,1))
+lines = '''
+Monkey 0:
+  Starting items: 79, 98
+  Operation: new = old * 19
+  Test: divisible by 23
+    If true: throw to monkey 2
+    If false: throw to monkey 3
 
+Monkey 1:
+  Starting items: 54, 65, 75, 74
+  Operation: new = old + 6
+  Test: divisible by 19
+    If true: throw to monkey 2
+    If false: throw to monkey 0
+
+Monkey 2:
+  Starting items: 79, 60, 97
+  Operation: new = old * old
+  Test: divisible by 13
+    If true: throw to monkey 1
+    If false: throw to monkey 3
+
+Monkey 3:
+  Starting items: 74
+  Operation: new = old + 3
+  Test: divisible by 17
+    If true: throw to monkey 0
+    If false: throw to monkey 1'''
+
+monkeys,lcm = parseMonkeys(lines.split('\n'))
 r1 = copy.deepcopy(monkeys)
 v = playRounds(r1,20)
 assert r1[0].inspected == 101
@@ -22,7 +46,7 @@ assert r1[3].items == []
 assert v == 10605
 
 r2 = copy.deepcopy(monkeys)
-v = playRounds(r2,10000,96577)
+v = playRounds(r2,10000,lcm)
 assert r2[0].inspected == 52166,monkeys[0].inspected
 assert r2[1].inspected == 47830
 assert r2[2].inspected == 1938

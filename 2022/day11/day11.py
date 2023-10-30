@@ -46,10 +46,9 @@ def playRounds(monkeys,count,modulo=None):
   h2 = max([m.inspected for m in monkeys if m.inspected < h1])
   return h1 * h2
 
-if __name__=='__main__':
+def parseMonkeys(lines):
+  lcm = 1
   monkeys = []
-  lines = open('input.txt').readlines()
-  modulo = 1
   for i in range(len(lines)):
     if lines[i].startswith('Monkey'):
       i = i + 1
@@ -65,7 +64,7 @@ if __name__=='__main__':
           item_op = lambda x, arg=int(line[2]):x * arg
       i = i + 1
       line = lines[i][lines[i].index('by') + 2:]
-      modulo = modulo * int(line)
+      lcm = lcm * int(line)
       item_test = lambda x, arg=int(line): x % arg == 0
       i = i + 1
       monkey_true = int(lines[i][lines[i].index('monkey') + 6:])
@@ -74,8 +73,12 @@ if __name__=='__main__':
 
       monkeys.append(monkey(items,item_op,item_test,monkey_true,monkey_false))
 
+  return monkeys,lcm
+
+if __name__=='__main__':
+  monkeys,lcm = parseMonkeys(open('input.txt').readlines())
   p1 = copy.deepcopy(monkeys)
   print(playRounds(p1,20))
 
   p2 = copy.deepcopy(monkeys)
-  print(playRounds(p2,10000,modulo))
+  print(playRounds(p2,10000,lcm))
