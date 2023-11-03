@@ -8,11 +8,10 @@ accszExk
 acctuvwj
 abdefghi'''
 
-terrain,start,end,lows = fillTerrain(lines.split('\n'))
+terrain,start,end = fillTerrain(lines.split('\n'))
 assert start == (0,0),start
 assert end == (5,2),end
-assert lows == [(0,0),(1,0),(0,1),(0,2),(0,3),(0,4)]
 
-trails = walkPath(terrain,lows,end)
+trails = walkPath(terrain,end)
 assert trails[start] == 31,dists
 assert min([d for d in trails.values()]) == 29

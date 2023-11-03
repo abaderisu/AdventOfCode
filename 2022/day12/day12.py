@@ -2,7 +2,6 @@
 
 def fillTerrain(lines):
   terrain = []
-  lows = []
   for y in range(len(lines)):
     terrain.append([0 for x in range(len(lines[0]))])
     for x in range(len(lines[0])):
@@ -15,10 +14,8 @@ def fillTerrain(lines):
         height = 'z'
 
       terrain[y][x] = ord(height)
-      if height == 'a':
-        lows.append((x,y))
 
-  return terrain,start,end,lows
+  return terrain,start,end
 
 def findNeighbors(terrain,node):
   x_min = 0
@@ -41,7 +38,7 @@ def findNeighbors(terrain,node):
 
   return neighbors
 
-def walkPath(terrain,starts,end):
+def walkPath(terrain,end):
   dists = {end : 0}
   path = [end]
   trails = {}
@@ -51,14 +48,14 @@ def walkPath(terrain,starts,end):
       if n not in dists:
         dists[n] = dists[cur] + 1
         path.append(n)
-        if n in starts:
+        if terrain[n[1]][n[0]] == ord('a'):
           trails[n] = dists[n]
 
   return trails
 
 if __name__ == '__main__':
-  terrain,start,end,lows = fillTerrain(open('input.txt').readlines())
-  trails = walkPath(terrain,lows,end)
+  terrain,start,end = fillTerrain(open('input.txt').readlines())
+  trails = walkPath(terrain,end)
   print('Part 1', trails[start])
   print('Part 2', min([d for d in trails.values()]))
 
